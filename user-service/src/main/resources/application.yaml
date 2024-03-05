@@ -1,0 +1,76 @@
+server:
+  port: 8083
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp
+          jwk-set-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp/protocol/openid-connect/certs
+  cloud:
+    openfeign:
+      client:
+        config:
+          storage-service:
+            url: ${STORAGE_SERVICE_URL:http://localhost:7070/api/v1/file/}
+            logger-level: full
+            connect-timeout: 1000
+            read-timeout: 4000
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+  datasource:
+    password: ${PSQL_PASSWORD:postgres}
+    username: ${PSQL_USERNAME:postgres}
+    url: ${PSQL_HOST:jdbc:postgresql://localhost:5432}/postgres
+  data:
+    elasticsearch:
+      should-create-index:
+        socialapp.ktuserservice.model.wrapper.UserElasticWrapper
+      url: ${ELASTIC_URL:localhost:9200}
+      connection-timeout: 5000
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  application:
+    name: user-service
+  neo4j:
+    authentication:
+      password: strong_password
+      username: neo4j
+    uri: bolt://${NEO4J_URL:localhost:7687}
+
+
+resilience4j:
+  retry:
+    metrics:
+      enabled: true
+    instances:
+      storage-service:
+        max-attempts: 2
+        fail-after-max-attempts: false
+  circuitbreaker:
+    metrics:
+      enabled: true
+    instances:
+      storage-service:
+        register-health-indicator: true
+        sliding-window-size: 50
+        sliding-window-type: TIME_BASED
+        slow-call-rate-threshold: 2f
+        minimumNumberOfCalls: 5
+        writable-stack-trace-enabled: true
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 5
+        enable-exponential-backoff: true
+        slow-call-duration-threshold: 2s
+logging:
+  level:
+    org.springframework.web: debug

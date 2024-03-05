@@ -1,0 +1,60 @@
+spring:
+  mvc:
+    dispatch-options-request: true
+    log-request-details: true
+    problemdetails:
+      enabled: true
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:http://localhost:9092}
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
+  cloud:
+    openfeign:
+      client:
+        config:
+          user-service:
+            url: ${USER_SERVICE_URL:http://localhost:8082}
+          storage-service-client:
+            read-timeout: 200000
+            connect-timeout: 200000
+            url: ${STORAGE_SERVICE_URL:http://localhost:7070/api/v1/file}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp
+          jwk-set-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp/protocol/openid-connect/certs
+  application:
+    name: news-service
+    admin:
+      enabled: false
+  datasource:
+    url: ${PSQL_HOST:jdbc:postgresql://localhost:5432}/news
+    driver-class-name: org.postgresql.Driver
+    username: ${PSQL_USERNAME:postgres}
+    password: ${PSQL_PASSWORD:postgres}
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  port: 8888
+  servlet:
+    context-path: /api/v1
+logging:
+  level:
+    org.springframework.web: debug
+    org.springframework.security: debug
+    org.springframework.cloud.openfeign: debug
+app:
+  email-sending-cron: "*/5 * * * * *" # every hour
+  default-page-size: 1000
+  email-sending-queue: email-sending-news-content-queue

@@ -1,0 +1,41 @@
+name: CI CD Logging starter
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'logging-spring-boot-starter/**'
+  workflow_dispatch:
+    inputs:
+      manual_trigger:
+        description: 'Manually trigger the workflow'
+        default: 'false'
+
+
+jobs:
+  logging-starter:
+    name: push to nexus
+    runs-on:  ubuntu-latest
+    steps:
+      - name: checkout repository logging starter
+        uses: actions/checkout@v2
+      - name: set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          server-id: mine-nexus-releases
+      - name: push to nexus with maven
+        env:
+          NEXUS_URL: ${{ secrets.NEXUS_URL  }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD  }}
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME  }}
+          MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME  }}
+          MAVEN_PASSWORD: ${{ secrets.NEXUS_PASSWORD  }}
+        run: |
+          mvn clean --batch-mode deploy \
+          -f logging-spring-boot-starter/pom.xml \
+          -DskipTests -Dmaven.install.skip=true \
+          -Dnexus.host=$NEXUS_URL \
+          -DaltDeploymentRepository=mine-nexus-releases::default::$NEXUS_URL/nexus/content/repositories/releases/
+

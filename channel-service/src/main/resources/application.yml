@@ -1,0 +1,27 @@
+spring:
+  main:
+    banner-mode: off
+  data:
+    mongodb:
+      uri: mongodb://mongouser:mongopassword@localhost:27018/channel.Channel?authSource=admin
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_SERVER}/auth/realms/socialapp
+          jwk-set-uri: ${OAUTH2_SERVER}/auth/realms/socialapp/protocol/openid-connect/certs
+  cloud:
+    openfeign:
+      client:
+        config:
+          storage-service-client:
+            url: http://localhost:7070/api/v1/file
+  application:
+    name: channel-service
+logging:
+  level:
+    org.springframework:
+      web: debug
+      security: debug
+server:
+  port: 7883

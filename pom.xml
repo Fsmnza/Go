@@ -1,0 +1,217 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.4</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>social-app</groupId>
+    <artifactId>social-network</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>social-network</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <!--suppress UnresolvedMavenProperty -->
+        <nexus.host>${env.NEXUS_URL}</nexus.host>
+        <spring-cloud.version>2022.0.1</spring-cloud.version>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <testcontainers.version>1.19.3</testcontainers.version>
+        <surefire.plugin.version>2.22.2</surefire.plugin.version>
+        <git-code-format-maven-plugin.version>5.1</git-code-format-maven-plugin.version>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>mine-nexus-snapshots</id>
+            <name>Nexus private maven repository for releases</name>
+            <url>${nexus.host}/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>mine-nexus-releases</id>
+            <name>Nexus private maven repository for snapshots</name>
+            <url>${nexus.host}/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.5.5.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+            <version>${testcontainers.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <modules>
+        <module>mail-service</module>
+        <module>qr-service</module>
+        <module>chat-service</module>
+        <module>api-gateway</module>
+        <module>user-service</module>
+        <module>url-shortener-service</module>
+        <module>news-service</module>
+        <module>logging-spring-boot-starter</module>
+        <module>channel-service</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.artifactId}</finalName>
+                    <classifier>exec</classifier>
+                </configuration>
+            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.cosium.code</groupId>-->
+            <!--                <artifactId>git-code-format-maven-plugin</artifactId>-->
+            <!--                <version>${git-code-format-maven-plugin.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>install-hooks</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--               <dependencies>-->
+            <!--                    &lt;!&ndash; Enable https://github.com/google/google-java-format &ndash;&gt;-->
+            <!--                    <dependency>-->
+            <!--                        <groupId>com.cosium.code</groupId>-->
+            <!--                        <artifactId>google-java-format</artifactId>-->
+            <!--                        <version>${git-code-format-maven-plugin.version}</version>-->
+            <!--                    </dependency>-->
+            <!--                </dependencies>-->
+            <!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <artifactId>maven-enforcer-plugin</artifactId>-->
+<!--                <version>3.0.0-M2</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>enforce</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <rules>-->
+<!--                                <banDuplicatePomDependencyVersions/>-->
+<!--                            </rules>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.30</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>1.5.5.Final</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <compilerArg>
+                            -Amapstruct.defaultComponentModel=spring
+                        </compilerArg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
+                <configuration>
+                    <argLine>
+                        --add-opens java.base/java.lang=ALL-UNNAMED
+                        --add-opens java.base/java.util=ALL-UNNAMED
+                    </argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:17.0.4.1_1-jre</image>
+                    </from>
+                    <to>
+                        <image>registry.hub.docker.com/daneker/${project.artifactId}</image>
+                    </to>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,31 @@
+qr:
+  width: 600
+  height: 600
+  charset: UTF-8
+server:
+  port: 7070
+  servlet:
+    context-path: /api/v1/qr
+spring:
+  main:
+    banner-mode: off
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080
+  application:
+    name: qr-service
+logging:
+  level:
+    org.springframework:
+      web: debug
+      security: debug
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
