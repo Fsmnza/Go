@@ -20,7 +20,7 @@ class UserServiceApplication {
         override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
     }
 
-    val  allHostsValid = HostnameVerifier { _, _ -> true }
+    val allHostsValid = HostnameVerifier { _, _ -> true }
 
     init {
         try {
