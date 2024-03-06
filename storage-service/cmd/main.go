@@ -18,22 +18,16 @@ func main() {
 		log.Fatal(err)
 		return
 	}
-
 	server := gin.Default()
-
 	minioClient := config.InitMinioClient(env)
 	mongoClient := config.InitMongoClient(env)
 	fileCollection := mongoClient.Database(env.MongoDBName).Collection(env.MongoFilesCollection)
-
 	http.NewFileRoutes(server, fileCollection, mongoClient, minioClient)
 	checkMinioBuckets(minioClient)
-
 	err = server.Run(env.Port)
-
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	log.Printf("app running on %s", env.Port)
 }
 func checkMinioBuckets(m *minio.Client) {

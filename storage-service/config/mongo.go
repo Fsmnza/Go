@@ -10,7 +10,6 @@ import (
 func InitMongoClient(env Env) *mongo.Client {
 	ctx, cancel := context.WithTimeout(context.Background(), env.MongoConnectTimeout)
 	defer cancel()
-
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(env.MongoURI))
 	if err != nil {
 		log.Fatal(err)
