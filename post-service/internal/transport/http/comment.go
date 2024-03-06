@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -21,7 +22,9 @@ func (h *CommentHandler) AddComment(c *gin.Context) {
 		bindError(c, http.StatusBadRequest, err)
 		return
 	}
-
+	fmt.Println(content)
+	fmt.Println(authorId)
+	fmt.Println(postId)
 	body := model.AddCommentRequest{
 		OwnerID: authorId,
 		Content: content,
@@ -37,7 +40,7 @@ func (h *CommentHandler) AddComment(c *gin.Context) {
 		bindError(c, http.StatusInternalServerError, err)
 		return
 	}
-
+	fmt.Println(files)
 	c.Status(http.StatusCreated)
 }
 
@@ -55,7 +58,9 @@ func (h *CommentHandler) UpdateComment(c *gin.Context) {
 		bindError(c, http.StatusBadRequest, err)
 		return
 	}
-
+	fmt.Println(body)
+	fmt.Println(commentID)
+	fmt.Println("test")
 	if err := h.commentService.UpdateCommentContent(id, body.Content); err != nil {
 		bindError(c, http.StatusInternalServerError, err)
 		return
