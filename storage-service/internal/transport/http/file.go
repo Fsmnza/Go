@@ -62,7 +62,7 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 func (h *FileHandler) UploadFile(c *gin.Context) {
 	source := c.Query("source")
 	target := c.Query("target")
-
+	fmt.Println(source)
 	file, err := c.FormFile("file")
 	if err != nil {
 		bindError(c, http.StatusBadRequest, err)

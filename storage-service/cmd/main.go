@@ -28,6 +28,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Before Start")
 	log.Printf("app running on %s", env.Port)
 }
 func checkMinioBuckets(m *minio.Client) {
@@ -36,7 +37,6 @@ func checkMinioBuckets(m *minio.Client) {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		if !exists {
 			err = m.MakeBucket(context.Background(), bucket.Name, minio.MakeBucketOptions{})
 			if err != nil {
