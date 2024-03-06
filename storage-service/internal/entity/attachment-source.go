@@ -14,6 +14,7 @@ const (
 	PostContent        AttachmentSource = "POST_CONTENT"
 	CommentContent     AttachmentSource = "COMMENT_CONTENT"
 	NewsContent        AttachmentSource = "NEWS_CONTENT"
+	KotContent         AttachmentSource = "KOT_CONTENT"
 )
 
 type Bucket struct {

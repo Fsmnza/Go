@@ -28,7 +28,7 @@ func (s *FileService) GetFile(fileID string) (*entity.File, error) {
 		fmt.Printf("Error converting fileID to ObjectID: %v\n", err)
 		return nil, err
 	}
-
+	fmt.Println(objID)
 	filter := bson.M{"_id": objID}
 
 	var file entity.File
@@ -67,7 +67,7 @@ func (s *FileService) SaveFile(file entity.File) (interface{}, error) {
 		log.Printf("Error inserting file: %v", err)
 		return nil, err
 	}
-
+	fmt.Println(result)
 	id := result.InsertedID
 	return id, nil
 }
