@@ -1,17 +1,12 @@
 # Post Service & Storage Service
 
 The Post Service is a backend application outlined to oversee posts, comments, and responses inside a social media stage.Moreover, , the application contains storage service, which is centralized on microservices for storing files and the application also communicates with minio s3 and stores data in mongo. Simply put, it uses innovations such as:
+## Features and Functionality
 
 ## Technologies Used
 
 - **PostgreSQL:** A powerful open-source relational database system.
 - **GORM:** Post service uses GORM as ORM to work with SQL
-- **Docker:** Containerization platform for packaging, distributing, and running applications.
-
-## Features and Functionality
-
-## Technologies Used
-
 - **MongoDB:** A NoSQL database for storing file metadata and references.
 - **Minio:** object storage server compatible with S3.
 - 		Creds:  credentials.NewStaticV4(env.MinioAccessKey, env.MinioSecretKey, env.MinioToken),
