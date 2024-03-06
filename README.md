@@ -1,4 +1,4 @@
-# Post Service
+# Post Service & Storage Service
 
 The Post Service is a backend application outlined to oversee posts, comments, and responses inside a social media stage.Moreover, , the application contains storage service, which is centralized on microservices for storing files and the application also communicates with minio s3 and stores data in mongo. Simply put, it uses innovations such as:
 
